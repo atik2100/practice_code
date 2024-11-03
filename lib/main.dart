@@ -18,7 +18,30 @@ class myApp extends StatelessWidget {
 }
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+   Home({super.key});
+
+  List<String> friendList = [
+    'Atik',
+    'Shahriar',
+    'Atia',
+    'Sanzida',
+    'Farjana',
+    'Sharmin',
+    'Kanta',
+    'Abdullah',
+    'Al',
+    'Sakil',
+    'Atik',
+    'Shahriar',
+    'Atia',
+    'Sanzida',
+    'Farjana',
+    'Sharmin',
+    'Kanta',
+    'Abdullah',
+    'Al',
+    'Sakil'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -26,117 +49,42 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         title: Text('Home'),
         backgroundColor: Colors.lightGreen,
+        actions: [
+          IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+        ],
       ),
-      body: Center(
+      drawer: Drawer(
+        backgroundColor: Colors.greenAccent.shade100,
         child: Column(
-          children: [
-            SizedBox(
-              height: 50,
-              width: 50,
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-                foregroundColor: Colors.white,
-                textStyle: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                ),
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
-                shadowColor: Colors.blueGrey,
-                elevation: 10,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: BorderSide(color: Colors.white60, width: 1),
-                ),
-              ),
-              onPressed: () {
-                showDialog(
-                    barrierColor: Colors.brown,
-                    barrierDismissible: true,
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text('Delete'),
-                        backgroundColor: Color(0xFFA7DD9B),
-                        content: Text('Are you sure'),
-                        actions: [
-                          TextButton(onPressed: () {}, child: Text('Yes')),
-                          TextButton(onPressed: () {}, child: Text('No')),
-                        ],
-                      );
-                    });
-              },
-              child: Text('Tap here'),
-            ),
-            SizedBox(height: 32),
-            TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.blue,
-                  textStyle: TextStyle(
-                    decoration: TextDecoration.underline,
-                    decorationThickness: 2,
-                  ),
-                ),
-                onPressed: () {
-                  print('tapped text button');
-                },
-                child: Text('Text button')),
-            SizedBox(height: 32),
-            IconButton(
-              style: IconButton.styleFrom(),
-              onPressed: () {
-                print('tapped icon button');
-              },
-              icon: Icon(Icons.add),
-            ),
-            SizedBox(height: 32),
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(),
-              onPressed: () {
-                print('tapped outline button');
-              },
-              child: Text('Outline Button'),
-            ),
-            SizedBox(height: 32),
-            GestureDetector(
-              onTap: () {
-                print('one tap');
-              },
-              onDoubleTap: () {
-                print('double tap');
-              },
-              onLongPress: () {
-                print('long press');
-              },
-              onLongPressEnd: (Details) {
-                print('long press end');
-              },
-              onHorizontalDragDown: (Details) {
-                print('horizontal');
-              },
-              child: Column(
-                children: [
-                  Text('A simple Text'),
-                ],
-              ),
-            ),
-            InkWell(
-              splashColor: Colors.blue,
-              onTap: () {
-                print('ink well');
-              },
-              child: Text('A Ink Well Text'),
-            ),
-          ],
+          children: [Text('Hello Atik')],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print('tapped fab button');
+
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: 0,
+        // backgroundColor: Colors.greenAccent,
+        indicatorColor: Colors.greenAccent,
+        surfaceTintColor: Colors.green,
+        shadowColor: Colors.green,
+        onDestinationSelected: (int index) {
+          //TODO: pending work
         },
-        child: Icon(Icons.add),
+        destinations: [
+          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+          NavigationDestination(icon: Icon(Icons.search), label: 'Search'),
+        ],
       ),
+
+      body: ListView.builder(
+        itemCount: friendList.length,
+          itemBuilder: (BuildContext context, int index){
+            return Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(friendList[index]),
+            );
+          },
+      ),
+
     );
   }
 }
