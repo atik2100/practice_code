@@ -51,91 +51,77 @@ class Home extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                showDialog(
-                    barrierColor: Colors.brown,
-                    barrierDismissible: true,
+                showModalBottomSheet(
                     context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Text('Delete'),
-                        backgroundColor: Color(0xFFA7DD9B),
-                        content: Text('Are you sure'),
-                        actions: [
-                          TextButton(onPressed: () {}, child: Text('Yes')),
-                          TextButton(onPressed: () {}, child: Text('No')),
+                    builder: (ctx) {
+                      return Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Title',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ],
+                          ),
+                          Divider(
+                            height: 20,
+                            thickness: 4,
+                          ),
+                          Text('Here is a dialog'),
+                          SizedBox(height: 16),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                  onPressed: () {}, child: Text('No')),
+                              ElevatedButton(
+                                  onPressed: () {}, child: Text('Yes')),
+                            ],
+                          ),
                         ],
                       );
                     });
               },
               child: Text('Tap here'),
             ),
-            SizedBox(height: 32),
-            TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: Colors.blue,
-                  textStyle: TextStyle(
-                    decoration: TextDecoration.underline,
-                    decorationThickness: 2,
-                  ),
-                ),
-                onPressed: () {
-                  print('tapped text button');
+            Padding(
+              padding: EdgeInsets.all(16),
+              child: TextField(
+                maxLines: 1,
+                textAlign: TextAlign.center,
+                maxLength: 50,
+                onChanged: (String? value) {
+                  print(value);
                 },
-                child: Text('Text button')),
-            SizedBox(height: 32),
-            IconButton(
-              style: IconButton.styleFrom(),
-              onPressed: () {
-                print('tapped icon button');
-              },
-              icon: Icon(Icons.add),
-            ),
-            SizedBox(height: 32),
-            OutlinedButton(
-              style: OutlinedButton.styleFrom(),
-              onPressed: () {
-                print('tapped outline button');
-              },
-              child: Text('Outline Button'),
-            ),
-            SizedBox(height: 32),
-            GestureDetector(
-              onTap: () {
-                print('one tap');
-              },
-              onDoubleTap: () {
-                print('double tap');
-              },
-              onLongPress: () {
-                print('long press');
-              },
-              onLongPressEnd: (Details) {
-                print('long press end');
-              },
-              onHorizontalDragDown: (Details) {
-                print('horizontal');
-              },
-              child: Column(
-                children: [
-                  Text('A simple Text'),
-                ],
+                decoration: InputDecoration(
+                  label: Text('Phone Number'),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.red,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.red),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.green),
+                  ),
+                  hintText: 'input your phone number',
+                  hintStyle: TextStyle(
+                    color: Colors.grey.shade400,
+                  ),
+                  prefixIcon: Icon(Icons.phone),
+                  suffixIcon: Icon(Icons.person),
+                  suffixIconColor: Colors.greenAccent,
+                ),
+                keyboardType: TextInputType.phone,
+                enabled: true,
               ),
-            ),
-            InkWell(
-              splashColor: Colors.blue,
-              onTap: () {
-                print('ink well');
-              },
-              child: Text('A Ink Well Text'),
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print('tapped fab button');
-        },
-        child: Icon(Icons.add),
       ),
     );
   }
