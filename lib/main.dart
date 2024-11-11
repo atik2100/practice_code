@@ -18,7 +18,7 @@ class myApp extends StatelessWidget {
 }
 
 class Home extends StatelessWidget {
-   Home({super.key});
+  Home({super.key});
 
   List<String> friendList = [
     'Atik',
@@ -59,32 +59,34 @@ class Home extends StatelessWidget {
           children: [Text('Hello Atik')],
         ),
       ),
-
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: 0,
-        // backgroundColor: Colors.greenAccent,
-        indicatorColor: Colors.greenAccent,
-        surfaceTintColor: Colors.green,
-        shadowColor: Colors.green,
-        onDestinationSelected: (int index) {
-          //TODO: pending work
-        },
-        destinations: [
-          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.search), label: 'Search'),
-        ],
-      ),
-
       body: ListView.builder(
         itemCount: friendList.length,
-          itemBuilder: (BuildContext context, int index){
-            return Padding(
-              padding: EdgeInsets.all(16),
-              child: Text(friendList[index]),
-            );
-          },
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            title: Text(friendList[index]),
+            titleTextStyle: TextStyle(
+              fontSize: 18,
+              color: Colors.deepOrange,
+            ),
+            subtitle: Text('Friend no: $index'),
+            subtitleTextStyle: TextStyle(
+              fontSize: 12,
+              color: Colors.purple,
+            ),
+            trailing: Icon(
+              Icons.arrow_forward,
+              color: Colors.red,
+            ),
+            leading: CircleAvatar(
+              child: Icon(Icons.person),
+            ),
+            onTap: (){
+              print('index no $index');
+              print('name: '+friendList[index]);
+            },
+          );
+        },
       ),
-
     );
   }
 }
