@@ -42,6 +42,9 @@ class Home extends StatelessWidget {
     'Al',
     'Sakil'
   ];
+  TextEditingController _EmailTEController = TextEditingController();
+  TextEditingController _PasswordTEController = TextEditingController();
+  GlobalKey<FormState> _fromkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -53,39 +56,68 @@ class Home extends StatelessWidget {
           IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
         ],
       ),
-      drawer: Drawer(
-        backgroundColor: Colors.greenAccent.shade100,
-        child: Column(
-          children: [Text('Hello Atik')],
-        ),
-      ),
-      body: ListView.builder(
-        itemCount: friendList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            title: Text(friendList[index]),
-            titleTextStyle: TextStyle(
-              fontSize: 18,
-              color: Colors.deepOrange,
-            ),
-            subtitle: Text('Friend no: $index'),
-            subtitleTextStyle: TextStyle(
-              fontSize: 12,
-              color: Colors.purple,
-            ),
-            trailing: Icon(
-              Icons.arrow_forward,
-              color: Colors.red,
-            ),
-            leading: CircleAvatar(
-              child: Icon(Icons.person),
-            ),
-            onTap: (){
-              print('index no $index');
-              print('name: '+friendList[index]);
-            },
-          );
+      /*body: ListView.separated(
+          itemCount: friendList.length,
+        itemBuilder: (context, index){
+            return Column(
+              children: [
+                Text(friendList[index]),
+              ],
+            );
         },
+
+        separatorBuilder: (context, index){
+            return Divider(
+              height: 30,
+            );
+        },
+      ),*/
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                height: 100,
+                width: 100,
+                color: Colors.purple,
+                margin: EdgeInsets.all(24),
+              ),
+              Container(
+                height: 100,
+                width: 100,
+                margin: EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                    // borderRadius:BorderRadius.circular(16),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(42),
+                      bottomRight: Radius.circular(42),
+                    ),
+                    color: Colors.purple,
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ]),
+              ),
+            ],
+          ),
+          Container(
+            height: 100,
+            width: 100,
+            margin: EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Colors.purple,
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                  image: AssetImage('assets/images/insta.png'),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
