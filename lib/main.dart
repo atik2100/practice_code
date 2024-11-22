@@ -17,7 +17,7 @@ class myApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: true,
       title: 'my practice app',
-      home: Home(),
+      home: Home( ),
     );
   }
 }
