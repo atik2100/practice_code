@@ -1,7 +1,12 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(myApp());
+  runApp(
+    DevicePreview(
+        builder: (BuildContext context) => const myApp(),
+    ),
+  );
 }
 
 class myApp extends StatelessWidget {
