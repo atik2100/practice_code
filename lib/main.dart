@@ -1,158 +1,157 @@
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_builder/responsive_builder.dart';
+import 'package:sizer/sizer.dart';
 
 void main() {
-  runApp(
-    DevicePreview(
-        builder: (BuildContext context) => const myApp(),
-    ),
-  );
+  runApp(MyApp());
 }
 
-class myApp extends StatelessWidget {
-  const myApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: true,
-      title: 'my practice app',
-      home: Home( ),
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Responsive Todo App',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: TodoPage(),
+        );
+      },
     );
   }
 }
 
-class Home extends StatelessWidget {
-  const Home({super.key});
-
+class TodoPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar: AppBar(
-        title: Text('Home'),
-        backgroundColor: Colors.green,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Profile(name: 'Atik',)),
-                );
-              },
-              child: Text('Go To Profile'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Settings()),
-                );
-              },
-              child: Text('Go To Settings'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  _TodoPageState createState() => _TodoPageState();
 }
-class Profile extends StatelessWidget {
-  const Profile({super.key, required this.name});
-  final String name;
 
-  @override
-  Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar: AppBar(
-        title: Text('Profile'),
-        backgroundColor: Colors.green,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(name),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => Home()),
-                    (predicate) => false);
-              },
-              child: Text('Go To Home'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Settings()),
-                );
-              },
-              child: Text('Go To Settings'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Go Back'),
-            ),
-          ],
-        ),
-      ),
-    );
+class _TodoPageState extends State<TodoPage> {
+  final List<String> _tasks = [];
+  final TextEditingController _controller = TextEditingController();
+
+  void _addTask() {
+    if (_controller.text.isNotEmpty) {
+      setState(() {
+        _tasks.add(_controller.text);
+        _controller.clear();
+      });
+    }
   }
-}
-class Settings extends StatelessWidget {
-  const Settings({super.key});
+
+  void _deleteTask(int index) {
+    setState(() {
+      _tasks.removeAt(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
-        backgroundColor: Colors.green,
+        title: Text('Responsive Todo App'),
+        backgroundColor: Colors.teal,
       ),
-      body: Center(
+      drawer: Drawer(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => Home()),
-                    (predicate) => false);
-              },
-              child: Text('Go to Home'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Profile(name: 'Shahriar'),
+
+            Text('Home',style: TextStyle(
+
+            ),),
+          ],
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            // Input field and Add button
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      labelText: 'Enter task',
+                      border: OutlineInputBorder(),
+                    ),
                   ),
-                );
-              },
-              child: Text('Go to Profile'),
+                ),
+                SizedBox(width: 2.w), // Responsive spacing
+                ElevatedButton(
+                  onPressed: _addTask,
+                  child: Text('Add'),
+                ),
+              ],
             ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text('Go Back'),
+            SizedBox(height: 2.h), // Responsive vertical spacing
+            // Responsive Layout for Task List
+            Expanded(
+              child: ScreenTypeLayout(
+                mobile: _buildTaskListInListView(), // Mobile layout
+                tablet: _buildTaskListInGrid(2),   // Tablet layout with 2 columns
+                desktop: _buildTaskListInGrid(3),  // Desktop layout with 3 columns
+              ),
             ),
           ],
         ),
       ),
     );
   }
+
+  // ListView for mobile screens
+  Widget _buildTaskListInListView() {
+    return ListView.builder(
+      itemCount: _tasks.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(_tasks[index]),
+          trailing: IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () => _deleteTask(index),
+          ),
+        );
+      },
+    );
+  }
+
+  // GridView for tablets and desktops
+  Widget _buildTaskListInGrid(int columns) {
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: columns,
+        crossAxisSpacing: 2.w,
+        mainAxisSpacing: 2.h,
+      ),
+      itemCount: _tasks.length,
+      itemBuilder: (context, index) {
+        return Card(
+          elevation: 3,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  _tasks[index],
+                  style: TextStyle(fontSize: 12.sp), // Responsive text size
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 1.h), // Spacing between text and button
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () => _deleteTask(index),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
 }
-
-
-
 
