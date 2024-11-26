@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:practice_code/models/todo.dart';
 
 class AddNewTodoScreen extends StatefulWidget {
   const AddNewTodoScreen({super.key});
@@ -9,15 +10,17 @@ class AddNewTodoScreen extends StatefulWidget {
 
 class _AddNewTodoScreenState extends State<AddNewTodoScreen> {
   final TextEditingController _titleTEController = TextEditingController();
-  final TextEditingController _descreptionTEController = TextEditingController();
+  final TextEditingController _descreptionTEController =
+      TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Add Todo'),
       ),
-      body:  SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Form(
@@ -27,10 +30,11 @@ class _AddNewTodoScreenState extends State<AddNewTodoScreen> {
                 TextFormField(
                   controller: _titleTEController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (String? value){
-                    if(value == null || value.trim().isEmpty){
+                  validator: (String? value) {
+                    if (value == null || value.trim().isEmpty) {
                       return 'Enter Your Title';
-                    } return null;
+                    }
+                    return null;
                   },
                   decoration: const InputDecoration(
                     labelText: 'Todo Title',
@@ -55,10 +59,11 @@ class _AddNewTodoScreenState extends State<AddNewTodoScreen> {
                 TextFormField(
                   controller: _descreptionTEController,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (String? value){
-                    if(value == null || value.trim().isEmpty){
+                  validator: (String? value) {
+                    if (value == null || value.trim().isEmpty) {
                       return 'Enter Your Description';
-                    } return null;
+                    }
+                    return null;
                   },
                   decoration: const InputDecoration(
                     labelText: 'Todo Description',
@@ -81,7 +86,15 @@ class _AddNewTodoScreenState extends State<AddNewTodoScreen> {
                 ),
                 const SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      Todo todo = Todo(
+                        title: _titleTEController.text.trim(),
+                        description: _descreptionTEController.text.trim(),
+                      );
+                      Navigator.pop(context, todo);
+                    }
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     foregroundColor: Colors.white,
